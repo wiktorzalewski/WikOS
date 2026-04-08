@@ -1,0 +1,20 @@
+# WikOS.run - Git Ignore
+
+# Credentials
+admin/db.php
+panel/db.php
+api/config.php
+
+# Environment
+.env
+.DS_Store
+Thumbs.db
+
+# Media
+uploads/*
+!uploads/.gitkeep
+
+# Temporary
+logs/
+tmp/
+*.log
