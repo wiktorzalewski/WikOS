@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://wyniki.wikos.run/sitemap.xml
