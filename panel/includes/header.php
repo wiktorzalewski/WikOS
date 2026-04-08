@@ -7,6 +7,7 @@
 <meta name="author" content="Wiktor Zalewski">
 <meta name="theme-color" content="#030303">
 <title><?= htmlspecialchars($page_title ?? 'Panel') ?> — WikOS</title>
+<link rel="icon" type="image/png" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">

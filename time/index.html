@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>WikOS | Master Time Protocol</title>
+    <link rel="icon" type="image/png" href="favicon.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-emerald: #10b981;
+            --dark-bg: #050505;
+            --terminal-border: rgba(16, 185, 129, 0.2);
+        }
+
+        body { 
+            background-color: var(--dark-bg); 
+            font-family: 'Fira Code', monospace; 
+            color: #ffffff; 
+            min-height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Hacker Grid Style */
+        .hacker-panel {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--terminal-border);
+            position: relative;
+            box-shadow: inset 0 0 20px rgba(16, 185, 129, 0.05);
+        }
+
+        .hacker-panel::before {
+            content: ":: SYSTEM_ACTIVE";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: var(--dark-bg);
+            padding: 0 10px;
+            color: var(--neon-emerald);
+            font-size: 10px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .neon-text { 
+            text-shadow: 0 0 12px var(--neon-emerald);
+            color: var(--neon-emerald);
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(
+                rgba(18, 16, 16, 0) 50%, 
+                rgba(0, 0, 0, 0.25) 50%
+            ), linear-gradient(
+                90deg, 
+                rgba(255, 0, 0, 0.03), 
+                rgba(0, 255, 0, 0.01), 
+                rgba(0, 0, 255, 0.03)
+            );
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        @keyframes noise {
+            0% { transform: translate(0,0) }
+            10% { transform: translate(-5%,-5%) }
+            20% { transform: translate(-10%,5%) }
+            30% { transform: translate(5%,-10%) }
+            40% { transform: translate(-5%,15%) }
+            50% { transform: translate(-10%,5%) }
+            60% { transform: translate(15%,0) }
+            70% { transform: translate(0,10%) }
+            80% { transform: translate(-15%,0) }
+            90% { transform: translate(10%,5%) }
+            100% { transform: translate(5%,0) }
+        }
+
+        .crt-flicker {
+            animation: flicker 0.15s infinite;
+        }
+
+        @keyframes flicker {
+            0% { opacity: 0.98; }
+            50% { opacity: 1; }
+            100% { opacity: 0.99; }
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 640px) {
+            .clock-text {
+                font-size: clamp(3.2rem, 20vw, 6.5rem);
+            }
+            .hacker-panel {
+                padding: 3rem 1rem !important;
+            }
+            .stat-box {
+                border-left: none !important;
+                border-top: 1px solid var(--terminal-border);
+            }
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8 crt-flicker">
+    <div class="scanlines"></div>
+
+    <div class="z-10 w-full max-w-4xl space-y-8 md:space-y-12">
+        <!-- System Header -->
+        <div class="flex flex-col md:flex-row items-center justify-between border-b border-emerald-900/30 pb-6 opacity-80">
+            <div class="flex items-center space-x-4 mb-4 md:mb-0">
+                <div class="w-2 h-2 bg-emerald-500 shadow-[0_0_8px_#10b981]"></div>
+                <span class="font-bold tracking-[0.2em] text-lg uppercase text-white font-['Space_Grotesk']">WIK<span class="text-emerald-500">OS</span>-DASHBOARD</span>
+            </div>
+            <div class="text-[10px] text-emerald-500/80 text-center md:text-right uppercase tracking-widest leading-relaxed">
+                NODE_ADDRESS: <span class="text-white">127.0.0.1:2560</span><br>
+                ENCRYPTION: <span class="text-white">QUANTUM_SECURE</span>
+            </div>
+        </div>
+
+        <!-- Master Clock -->
+        <div class="hacker-panel p-12 md:p-20 text-center relative">
+            <div class="absolute top-0 right-0 p-4 text-[8px] text-emerald-900 opacity-50 uppercase tracking-tighter">
+                REF_OSC: TCXO_STABLE
+            </div>
+            
+            <h1 class="text-emerald-500/40 text-[9px] tracking-[0.6em] mb-10 uppercase">Master Time Protocol (MTP)</h1>
+            
+            <div id="clock" class="clock-text text-7xl md:text-9xl font-bold tracking-tighter neon-text mb-6 transition-all duration-75">00:00:00</div>
+            
+            <div class="flex justify-center items-center space-x-6">
+                <div id="date" class="text-slate-500 text-sm md:text-lg tracking-[0.2em] uppercase">LOADING...</div>
+                <div id="ms" class="text-emerald-500 font-bold text-lg md:text-2xl min-w-[3.5rem] md:min-w-[4rem]">.000</div>
+            </div>
+        </div>
+
+        <!-- Terminal Output Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-3 hacker-panel">
+            <div class="p-6 text-center stat-box">
+                <span class="block text-[9px] text-emerald-500/60 uppercase mb-2 tracking-[0.3em]">Latency</span>
+                <span class="text-sm font-bold text-white">0.042 ms</span>
+            </div>
+            <div class="p-6 text-center border-l border-emerald-900/30 stat-box">
+                <span class="block text-[9px] text-emerald-500/60 uppercase mb-2 tracking-[0.3em]">Drift</span>
+                <span class="text-sm font-bold text-white">±0.000001s</span>
+            </div>
+            <div class="p-6 text-center border-l border-emerald-900/30 stat-box">
+                <span class="block text-[9px] text-emerald-500/60 uppercase mb-2 tracking-[0.3em]">Uptime</span>
+                <span class="text-sm font-bold text-white">99.999%</span>
+            </div>
+        </div>
+
+        <!-- Credits -->
+        <div class="pt-8 text-center space-y-4">
+            <div class="flex flex-wrap justify-center gap-x-8 gap-y-3 text-[10px] text-emerald-900 uppercase font-bold tracking-widest">
+                <a href="https://www.instagram.com/wiktor8446/" target="_blank" class="hover:text-emerald-400 transition-colors">ZALEWSKI</a>
+                <a href="https://www.instagram.com/oskar_kulinskii/" target="_blank" class="hover:text-emerald-400 transition-colors">KULIŃSKI</a>
+                <a href="https://github.com/wiktorzalewski" target="_blank" class="hover:text-emerald-400 transition-colors">SOURCE_CODE</a>
+            </div>
+            <div class="text-[8px] text-slate-800 uppercase tracking-[0.5em]">
+                (c) 2026 wikos architecture // core logic v4.0
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const clockEl = document.getElementById('clock');
+        const msEl = document.getElementById('ms');
+        const dateEl = document.getElementById('date');
+
+        function updateDisplay() {
+            const now = new Date();
+            
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            const ms = String(now.getMilliseconds()).padStart(3, '0');
+
+            if (clockEl.innerText !== `${h}:${m}:${s}`) {
+                clockEl.innerText = `${h}:${m}:${s}`;
+            }
+            msEl.innerText = `.${ms}`;
+
+            const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+            const dateStr = now.toLocaleDateString('pl-PL', options).replace(/\//g, '-');
+            if (dateEl.innerText !== dateStr) {
+                dateEl.innerText = dateStr;
+            }
+
+            requestAnimationFrame(updateDisplay);
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>

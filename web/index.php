@@ -26,6 +26,7 @@ function showText($text) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= showText($content['navbar']['section_title'] ?? 'WikOS') ?> | Timing System</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes gradient-x {
