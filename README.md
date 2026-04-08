@@ -1,6 +1,5 @@
 # 🏃‍♂️ WikOS.run — Master Time Protocol
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](https://opensource.org/licenses/MIT)
 [![Version](https://img.shields.io/badge/version-4.0.0-blue.svg)](https://github.com/wiktorzalewski/WikOS)
 
 Nowoczesny system pomiaru czasu dla lekkoatletów i trenerów. Projekt łączy w sobie precyzję urządzeń pomiarowych (IoT) z intuicyjnym interfejsem webowym do zarządzania wynikami i zawodnikami.
