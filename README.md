@@ -31,3 +31,9 @@ Projekt został zbudowany przy użyciu nowoczesnych i wydajnych technologii:
 ## 📄 Licencja
 **Wszelkie prawa zastrzeżone (All Rights Reserved).**  
 Kod jest udostępniony w celach demonstracyjnych i edukacyjnych (Open Source w zakresie wglądu). Zabrania się kopiowania, modyfikacji oraz redystrybucji kodu bez wyraźnej zgody autora (Wiktor Zalewski).
+
+---
+
+## 🤖 Rozwój przy wsparciu AI
+Od wersji v4.1 projekt wdraża testową współpracę z **AI Agentem** w celu optymalizacji kodu i modernizacji interfejsu. WikOS.run służy obecnie jako poligon doświadczalny dla autonomicznych systemów asystujących w programowaniu.
+
