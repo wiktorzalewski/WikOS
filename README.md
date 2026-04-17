@@ -35,5 +35,6 @@ Kod jest udostępniony w celach demonstracyjnych i edukacyjnych (Open Source w z
 ---
 
 ## 🤖 Rozwój przy wsparciu AI
-Od wersji v4.1 projekt wdraża testową współpracę z **AI Agentem** w celu optymalizacji kodu i modernizacji interfejsu. WikOS.run służy obecnie jako poligon doświadczalny dla autonomicznych systemów asystujących w programowaniu. **THAT'S NOT FULL VIBE CODING**
+Od wersji v4.1 projekt wdraża testową współpracę z **AI Agentem** w celu optymalizacji kodu i modernizacji interfejsu. WikOS.run służy obecnie jako poligon doświadczalny dla autonomicznych systemów asystujących w programowaniu.
+**THAT'S NOT FULL VIBE CODING**
 
